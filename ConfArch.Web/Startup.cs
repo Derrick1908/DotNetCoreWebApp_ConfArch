@@ -1,6 +1,7 @@
 using ConfArch.Data;
 using ConfArch.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -32,8 +33,17 @@ namespace ConfArch.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
                     assembly => assembly.MigrationsAssembly(typeof(ConfArchDbContext).Assembly.FullName)));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
+            services.AddAuthentication( o => {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;        //Note that the Default Authentication Scheme Name for Cookies is "Cookies" and for Google is "Google"
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;                         //Here we set the DeafultAuthentication Scheme to Cookies so the two Scheeme Actions of Authentication and Forbid will be of Cookies while the Scheme Action of Challenge (Login) will be Google Default Scheme i.e. Google redirected Login and not Cookie Login
+            })
+                    .AddCookie()
+                    .AddGoogle(o =>                     //This Part is responsible for adding the Google Authentication using ClientId and ClientSecret of the Registered App.
+                    {
+                        o.ClientId = Configuration["Google:ClientId"];
+                        o.ClientSecret = Configuration["Google:ClientSecret"];
+
+                    });     
                     //.AddCookie(o => o.LoginPath = "account/sigin");     //Incase the Login Path has to be changed from the default settings.
         }
 
