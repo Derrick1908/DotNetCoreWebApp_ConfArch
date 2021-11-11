@@ -33,13 +33,17 @@ namespace ConfArch.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
                     assembly => assembly.MigrationsAssembly(typeof(ConfArchDbContext).Assembly.FullName)));
 
-            services.AddAuthentication( o => {
-                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;        //Note that the Default Authentication Scheme Name for Cookies is "Cookies" and for Google is "Google"
-                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;                         //Here we set the DeafultAuthentication Scheme to Cookies so the two Scheeme Actions of Authentication and Forbid will be of Cookies while the Scheme Action of Challenge (Login) will be Google Default Scheme i.e. Google redirected Login and not Cookie Login
-            })
+            services.AddAuthentication( o =>
+            {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;                     //Note that the Default Authentication Scheme Name for Cookies is "Cookies" and for Google is "Google"
+                //o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;                         //Here we set the DefaultAuthentication Scheme to Cookies so the two Scheeme Actions of Authentication and Forbid will be of Cookies while the Scheme Action of Challenge (Login) will be Google Default Scheme i.e. Google redirected Login and not Cookie Login
+            })                                                                                              //Commented out the above line so that Authentication can happen via local Login or Google Login          
+            
                     .AddCookie()
+                    .AddCookie(ExternalAuthenticationDefaults.AuthenticationScheme)
                     .AddGoogle(o =>                     //This Part is responsible for adding the Google Authentication using ClientId and ClientSecret of the Registered App.
                     {
+                        o.SignInScheme = ExternalAuthenticationDefaults.AuthenticationScheme;
                         o.ClientId = Configuration["Google:ClientId"];
                         o.ClientSecret = Configuration["Google:ClientSecret"];
 

@@ -11,7 +11,7 @@ namespace ConfArch.Data.Repositories
         {
             new User{
                 Id = 3522, Name = "roland", Password = "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",  //The Pasword currently set is "secret" and is stored in Cryptographic Hash Form
-                FavoriteColor = "blue", Role = "Admin", GoogleId = "101517359495305583936" } 
+                FavoriteColor = "blue", Role = "Admin", GoogleId = "117002938807255470278" } 
         };
 
         public User GetByUsernameAndPassword(string username, string password)
