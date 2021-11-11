@@ -26,6 +26,7 @@ namespace ConfArch.Web
             services.AddScoped<IConferenceRepository, ConferenceRepository>();
             services.AddScoped<IProposalRepository, ProposalRepository>();
             services.AddScoped<IAttendeeRepository, AttendeeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddDbContext<ConfArchDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
@@ -33,6 +34,7 @@ namespace ConfArch.Web
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie();
+                    //.AddCookie(o => o.LoginPath = "account/sigin");     //Incase the Login Path has to be changed from the default settings.
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

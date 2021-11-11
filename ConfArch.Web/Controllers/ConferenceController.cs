@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConfArch.Web.Controllers
 {
-    [AllowAnonymous]
+    [AllowAnonymous]                                    //Note that Default is Authorize, So this Full Controller can be accessed without Authentication
     public class ConferenceController: Controller
     {
         private readonly IConferenceRepository repo;
